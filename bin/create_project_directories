@@ -1,0 +1,16 @@
+#! /bin/bash
+
+
+# Create the project directories
+# $1: parent directory
+# $2: project name
+create_dirs()
+{
+    PROJECT_DIR=$1
+    PROJECT_NAME=$2
+    
+    mkdir $PROJECT_DIR/$PROJECT_NAME
+    mkdir -p $PROJECT_DIR/$PROJECT_NAME/include/$PROJECT_NAME
+    mkdir $PROJECT_DIR/$PROJECT_NAME/src
+    mkdir $PROJECT_DIR/$PROJECT_NAME/test
+}

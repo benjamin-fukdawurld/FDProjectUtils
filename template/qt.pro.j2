@@ -1,0 +1,35 @@
+#-------------------------------------------------
+#
+# Project created by FDProjectUtils on {{ date }}
+#
+#-------------------------------------------------
+TARGET = {{ project.name }}
+TEMPLATE = {{ project.type }}
+CONFIG += console {%- if cpp_version is defined %} {{ cpp_version }} {%- else %} c++17 {% endif %}
+{% if project.staticlib is defined %}
+CONFIG += staticlib
+{% endif %}
+{% if qt is not defined %}
+CONFIG -= app_bundle
+CONFIG -= qt
+{% endif %}
+DESTDIR = ../build/lib
+MAKEFILE = ../build/makefiles/$${TARGET}
+OBJECTS_DIR = ../build/.obj/$${TARGET}
+
+DEPENDPATH += \
+    include \
+
+INCLUDEPATH += \
+    include \
+
+SOURCES += \
+
+HEADERS += \
+{% if project.type == "lib" %}
+unix {
+    target.path = /usr/lib
+    INSTALLS += target
+}
+{% endif -%}
+

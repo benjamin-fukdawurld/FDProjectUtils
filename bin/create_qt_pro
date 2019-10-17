@@ -1,0 +1,67 @@
+#! /usr/bin/python3
+# -*- coding: utf-8 -*-
+
+import json
+import argparse
+import jinja2
+
+from pydoc import locate
+from datetime import datetime
+
+def parse_args(arg_config):
+    data = None
+
+    with open(arg_config) as json_file:
+        data = json.load(json_file)
+
+    if data is None:
+        exit -1
+
+    if "arg_parser" in data:
+        parser_config = data["arg_parser"]
+
+    parser = argparse.ArgumentParser(**parser_config)
+
+    args = data["args"]
+
+    if "positional" in args:
+        for arg in args["positional"]:
+            name = arg["name"]
+            t = arg["type"]
+            del arg["name"]
+            del arg["type"]
+            parser.add_argument(*name, type=locate(t), **arg)
+            
+    if "optional" in args:
+        for arg in args["optional"]:
+            name = arg["name"]
+            del arg["name"]
+            
+            if "type" in arg:
+                t = arg["type"]
+                arg["type"] = locate(t)
+            
+            parser.add_argument(*name, **arg)
+
+    return parser.parse_args()
+    
+
+def generate_file(project_config, template_path):
+    if project_config.type == "staticlib":
+        project_config.type = "lib"
+        project_config.staticlib = True
+    
+    with open(template_path) as template_file:
+        template = jinja2.Template(template_file.read())
+    
+    if template is None:
+        exit -1
+    
+    result = template.render(project=project_config, date=datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+    
+    print(result)
+    
+
+if __name__ == "__main__":
+    generate_file(parse_args('create_qt_pro_args.json'), "../template/qt.pro.j2")
+    
