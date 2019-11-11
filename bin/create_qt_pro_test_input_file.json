@@ -1,0 +1,21 @@
+{
+    "name": "MyProject",
+    "type": "app",
+    "cpp_version": "c++14",
+    "qt": true,
+    "lib_dirs": [
+        "../dir1",
+        "another_dir",
+        "/dir/subdir"
+    ],
+    "libs": [
+        "pthread",
+        "lMylib",
+        "lsomeotherlib"
+    ],
+    "includes": [
+        "any_directory",
+        "some/include/dir"
+    ],
+    "output_file": "MyProject.pro"
+}

@@ -3,13 +3,14 @@
 # Project created by FDProjectUtils on {{ date }}
 #
 #-------------------------------------------------
+
 TARGET = {{ project.name }}
 TEMPLATE = {{ project.type }}
 CONFIG += console {%- if cpp_version is defined %} {{ cpp_version }} {%- else %} c++17 {% endif %}
 {% if project.staticlib is defined %}
 CONFIG += staticlib
 {% endif %}
-{% if qt is not defined %}
+{% if project.qt is not defined or project.qt is sameas true %}
 CONFIG -= app_bundle
 CONFIG -= qt
 {% endif %}
@@ -17,11 +18,39 @@ DESTDIR = ../build/lib
 MAKEFILE = ../build/makefiles/$${TARGET}
 OBJECTS_DIR = ../build/.obj/$${TARGET}
 
+{% if project.lib_dirs is defined -%}
+{%- set libdirs = project.lib_dirs.split(' ') -%}
+LIBS += \
+{%- for libdir in libdirs %}
+    -L{{ libdir }} \
+{%- endfor -%}
+{%- endif %}
+
+{% if project.libs is defined -%}
+{%- set libs = project.libs.split(' ') -%}
+LIBS += \
+{%- for lib in libs %}
+    -{{ lib }} \
+{%- endfor -%}
+{%- endif %}
+
 DEPENDPATH += \
     include \
+{%- if project.includes is defined -%}
+{%- set includes = project.includes.split(' ') -%}
+{%- for include in includes %}
+    {{ include }} \
+{%- endfor -%}
+{%- endif %}
 
 INCLUDEPATH += \
     include \
+{%- if project.includes is defined -%}
+{%- set includes = project.includes.split(' ') -%}
+{%- for include in includes %}
+    {{ include }} \
+{%- endfor -%}
+{%- endif %}
 
 SOURCES += \
 

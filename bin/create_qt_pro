@@ -8,6 +8,53 @@ import jinja2
 from pydoc import locate
 from datetime import datetime
 
+def prepareHelpString(help):
+    if type(help) is dict:
+        with open(help["src"]) as help_file:
+            return help_file.read()
+
+    return help
+
+def prepareArg(arg):
+    name = arg["name"]
+    del arg["name"]
+    
+    if "type" in arg:
+        t = arg["type"]
+        arg["type"] = locate(t)
+
+    if "help" in arg:
+        arg["help"] = prepareHelpString(arg["help"])
+    
+    return (name, arg)
+
+def addArgs(parser, args):
+    for arg in args:
+        name, arg = prepareArg(arg)
+        parser.add_argument(*name, **arg)
+
+def setParserArgs(parser, args):
+    if "positional" in args:
+        addArgs(parser, args["positional"])
+            
+    if "optional" in args:
+        addArgs(parser, args["optional"])
+
+def prepareParser(parser, description):
+    if "sub_command" in description:
+        sub_command = description["sub_command"]
+        sub_parser_group = parser.add_subparsers(**sub_command["config"])
+        for command in sub_command["command"]:
+            config = command["config"]
+            name = config["name"]
+            del config["name"]
+            sub_parser = sub_parser_group.add_parser(name, **config)
+            prepareParser(sub_parser, command)
+
+    if "args" in description:
+        args = description["args"]
+        setParserArgs(parser, args)
+
 def parse_args(arg_config):
     data = None
 
@@ -21,32 +68,19 @@ def parse_args(arg_config):
         parser_config = data["arg_parser"]
 
     parser = argparse.ArgumentParser(**parser_config)
-
-    args = data["args"]
-
-    if "positional" in args:
-        for arg in args["positional"]:
-            name = arg["name"]
-            t = arg["type"]
-            del arg["name"]
-            del arg["type"]
-            parser.add_argument(*name, type=locate(t), **arg)
-            
-    if "optional" in args:
-        for arg in args["optional"]:
-            name = arg["name"]
-            del arg["name"]
-            
-            if "type" in arg:
-                t = arg["type"]
-                arg["type"] = locate(t)
-            
-            parser.add_argument(*name, **arg)
+    prepareParser(parser, data)
 
     return parser.parse_args()
     
 
 def generate_file(project_config, template_path):
+    if "file" in project_config:
+        with open(project_config.file) as json_file:
+            project_config.__dict__ = json.load(json_file)
+            project_config.lib_dirs = ' '.join(project_config.lib_dirs)
+            project_config.libs = ' '.join(project_config.libs)
+            project_config.includes = ' '.join(project_config.includes)
+
     if project_config.type == "staticlib":
         project_config.type = "lib"
         project_config.staticlib = True
@@ -59,7 +93,12 @@ def generate_file(project_config, template_path):
     
     result = template.render(project=project_config, date=datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
     
-    print(result)
+    if "output_file" in project_config:
+        file_path = project_config.output_file
+        with open(file_path, "w") as f:
+            print(result, file=f)
+    else:
+        print(result)
     
 
 if __name__ == "__main__":

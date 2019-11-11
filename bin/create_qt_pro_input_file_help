@@ -1,0 +1,39 @@
+specify a file to use as input parameter for create_qt_pro tool.
+This file must contain a JSON object.
+There is the structure of the object:
+
+mandatory fields:
+    - name: the name of the project as string
+    - type: the type of the project { app, lib, staticlib } as string
+
+optional fields:
+    - cpp_version: the c++ version to use as string (default value: "c++17")
+    - qt: a boolean to specify if Qt must be use or not for this project (default value: false)
+    - lib_dirs: an array of directories as string to add to the project's library path.
+    - libs: an array of library as string to link with the project
+    - inludes: an array of directories as string to add to the project include path
+    - output_file: specify the file where the project definition will be written as string
+
+exemple:
+
+{
+    "name": "MyProject",
+    "type": "app",
+    "cpp_version": "c++14",
+    "qt": true,
+    "lib_dirs": [
+        "../dir1",
+        "another_dir",
+        "/dir/subdir"
+    ],
+    "libs": [
+        "pthread",
+        "lMylib",
+        "lsomeotherlib"
+    ],
+    "includes": [
+        "any_directory",
+        "some/include/dir"
+    ],
+    "output_file": "MyProject.pro"
+}

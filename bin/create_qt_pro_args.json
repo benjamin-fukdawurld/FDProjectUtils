@@ -3,34 +3,88 @@
         "prog": "create_qt_pro",
         "description": "This tool generate a Qt .pro file for your application"
     },
-    "args": {
-        "positional": [
+    "sub_command": {
+        "config":{
+            "title": "sub command set"
+        },
+        "command": [
             {
-                "name": ["name"],
-                "help": "the name of the project",
-                "type": "str"
+                "config": {
+                    "name": "command",
+                    "description": "Generate the file from command line arguments"
+                },
+                "args": {
+                    "positional": [
+                        {
+                            "name": ["name"],
+                            "help": "the name of the project",
+                            "type": "str"
+                        },
+                        {
+                            "name": ["type"],
+                            "help": "the type of the project",
+                            "type": "str",
+                            "default": "app",
+                            "choices": ["app", "lib", "staticlib"]
+                        }
+                    ],
+                    "optional": [
+                        {
+                            "name": ["-c", "--cpp_version"],
+                            "help": "the c++ version to use for the project",
+                            "type": "str",
+                            "default": "c++17",
+                            "dest": "cpp_version"
+                        },
+                        {
+                            "name": ["-q", "--use_qt"],
+                            "help": "specify if the project use qt",
+                            "action": "store_true",
+                            "dest": "qt"
+                        },
+                        {
+                            "name": ["-d", "--lib_dirs"],
+                            "help": "specify the directories to add to the project's library path. Use ' ' as separator",
+                            "type": "str",
+                            "dest": "lib_dirs"
+                        },
+                        {
+                            "name": ["-l", "--libs"],
+                            "help": "specify the library to link with the project. Use ' ' as separator",
+                            "type": "str",
+                            "dest": "libs"
+                        },
+                        {
+                            "name": ["-i", "--includes"],
+                            "help": "specify the directories to add to the project's include path. Use ' ' as separator",
+                            "type": "str",
+                            "dest": "includes"
+                        },
+                        {
+                            "name": ["-o", "--output_file"],
+                            "help": "specify the file where the project definition will be written",
+                            "type": "str",
+                            "dest": "output_file"
+                        }
+                    ]
+                }
             },
             {
-                "name": ["type"],
-                "help": "the type of the project",
-                "type": "str",
-                "default": "app",
-                "choices": ["app", "lib", "staticlib"]
-            }
-        ],
-        "optional": [
-            {
-                "name": ["-c", "--cpp_version"],
-                "help": "the c++ version to use for the project",
-                "type": "str",
-                "default": "c++17",
-                "dest": "cpp_version"
-            },
-            {
-                "name": ["-q", "--use_qt"],
-                "help": "specify if the project use qt",
-                "action": "store_true",
-                "dest": "qt"
+                "config": {
+                    "name": "file",
+                    "description": "Generate the file from JSON config file"
+                },
+                "args": {
+                    "positional": [
+                        {
+                            "name": ["file"],
+                            "help": {
+                                "src": "create_qt_pro_input_file_help"
+                            },
+                            "type": "str"
+                        }
+                    ]
+                }
             }
         ]
     }
