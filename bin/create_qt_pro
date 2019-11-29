@@ -1,6 +1,7 @@
 #! /usr/bin/python3
 # -*- coding: utf-8 -*-
 
+import os
 import json
 import argparse
 import jinja2
@@ -10,7 +11,9 @@ from datetime import datetime
 
 def prepareHelpString(help):
     if type(help) is dict:
-        with open(help["src"]) as help_file:
+        path = os.path.join(os.path.dirname(os.path.abspath( __file__ )),
+                            help["src"])
+        with open(path) as help_file:
             return help_file.read()
 
     return help
@@ -74,12 +77,14 @@ def parse_args(arg_config):
     
 
 def generate_file(project_config, template_path):
-    if "file" in project_config:
-        with open(project_config.file) as json_file:
-            project_config.__dict__ = json.load(json_file)
-            project_config.lib_dirs = ' '.join(project_config.lib_dirs)
-            project_config.libs = ' '.join(project_config.libs)
-            project_config.includes = ' '.join(project_config.includes)
+    if "file" not in project_config:
+        exit(-1)
+    
+    with open(project_config.file) as json_file:
+        project_config.__dict__ = json.load(json_file)
+        project_config.lib_dirs = ' '.join(project_config.lib_dirs)
+        project_config.libs = ' '.join(project_config.libs)
+        project_config.includes = ' '.join(project_config.includes)
 
     if project_config.type == "staticlib":
         project_config.type = "lib"
@@ -91,7 +96,8 @@ def generate_file(project_config, template_path):
     if template is None:
         exit -1
     
-    result = template.render(project=project_config, date=datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+    result = template.render(project=project_config,
+                             date=datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
     
     if "output_file" in project_config:
         file_path = project_config.output_file
@@ -102,5 +108,8 @@ def generate_file(project_config, template_path):
     
 
 if __name__ == "__main__":
-    generate_file(parse_args('create_qt_pro_args.json'), "../template/qt.pro.j2")
+    path = os.path.join(os.path.dirname(os.path.abspath( __file__ )), 'create_qt_pro_args.json')
+    args_description = parse_args(path)
+    template_path = os.path.join(os.path.dirname(os.path.abspath( __file__ )), '../template/qt.pro.j2')
+    generate_file(args_description, template_path)
     
