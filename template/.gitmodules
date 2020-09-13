@@ -1,0 +1,78 @@
+[submodule "FDCore"]
+	path = FDCore
+	url = git@github.com:benjamin-fukdawurld/FDCore.git
+[submodule "FD3D"]
+	path = FD3D
+	url = git@github.com:benjamin-fukdawurld/FD3D.git
+[submodule "FDCodeAnalyser"]
+	path = FDCodeAnalyser
+	url = git@github.com:benjamin-fukdawurld/FDCodeAnalyser.git
+[submodule "FDEngine"]
+	path = FDEngine
+	url = git@github.com:benjamin-fukdawurld/FDEngine.git
+[submodule "FDGL"]
+	path = FDGL
+	url = git@github.com:benjamin-fukdawurld/FDGL.git
+[submodule "FDSerialize"]
+	path = FDSerialize
+	url = git@github.com:benjamin-fukdawurld/FDSerialize.git
+[submodule "FDJson"]
+	path = FDJson
+	url = git@github.com:benjamin-fukdawurld/FDJson.git
+[submodule "FDLua"]
+	path = FDLua
+	url = git@github.com:benjamin-fukdawurld/FDLua.git
+[submodule "FDPython"]
+	path = FDPython
+	url = git@github.com:benjamin-fukdawurld/FDPython.git
+[submodule "FDQUI"]
+	path = FDQUI
+	url = git@github.com:benjamin-fukdawurld/FDQUI.git
+[submodule "FDSceneGraph"]
+	path = FDSceneGraph
+	url = git@github.com:benjamin-fukdawurld/FDSceneGraph.git
+[submodule "FDScript"]
+	path = FDScript
+	url = git@github.com:benjamin-fukdawurld/FDScript.git
+[submodule "FDXml"]
+	path = FDXml
+	url = git@github.com:benjamin-fukdawurld/FDXml.git
+[submodule "thirdparty/llvm"]
+	path = thirdparty/llvm
+	url = https://github.com/llvm/llvm-project.git
+[submodule "thirdparty/boost"]
+	path = thirdparty/boost
+	url = https://github.com/boostorg/boost.git
+[submodule "thirdparty/pybind11"]
+	path = thirdparty/pybind11
+	url = https://github.com/pybind/pybind11.git
+[submodule "thirdparty/rapidjson"]
+	path = thirdparty/rapidjson
+	url = https://github.com/Tencent/rapidjson.git
+[submodule "thirdparty/rapidxml"]
+	path = thirdparty/rapidxml
+	url = https://github.com/discordapp/rapidxml.git
+[submodule "thirdparty/googletest"]
+	path = thirdparty/googletest
+	url = https://github.com/google/googletest.git
+[submodule "thirdparty/glm"]
+	path = thirdparty/glm
+	url = https://github.com/g-truc/glm.git
+[submodule "thirdparty/glad"]
+	path = thirdparty/glad
+	url = https://github.com/benjamin-fukdawurld/glad.git
+[submodule "thirdparty/assimp"]
+	path = thirdparty/assimp
+	url = https://github.com/assimp/assimp.git
+[submodule "thirdparty/stb"]
+	path = thirdparty/stb
+	url = https://github.com/nothings/stb.git
+[submodule "FDRenderer"]
+	path = FDRenderer
+	url = git@github.com:benjamin-fukdawurld/FDRenderer.git
+[submodule "thirdparty/depot_tools"]
+	path = thirdparty/depot_tools
+	url = https://chromium.googlesource.com/chromium/tools/depot_tools
+[submodule "FDProjectUtils"]
+	path = FDProjectUtils
+	url = git@github.com:benjamin-fukdawurld/FDProjectUtils.git
